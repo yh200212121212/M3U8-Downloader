@@ -1,3 +1,7 @@
+Please go to https://github.com/nilaoda/N_m3u8DL-CLI 
+
+请使用 https://github.com/nilaoda/N_m3u8DL-CLI
+
 # M3U8-Downloader
  * **The New Version** : <https://github.com/nilaoda/The-New-M3U8-Downloader>
 
