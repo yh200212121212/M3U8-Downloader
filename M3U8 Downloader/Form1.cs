@@ -18,16 +18,7 @@ namespace M3U8_Downloader
     public partial class Form1 : Form
     {
         
-        [DllImport("kernel32.dll")]
-        static extern bool GenerateConsoleCtrlEvent(int dwCtrlEvent, int dwProcessGroupId);
-        [DllImport("kernel32.dll")]
-        static extern bool SetConsoleCtrlHandler(IntPtr handlerRoutine, bool add);
-        [DllImport("kernel32.dll")]
-        static extern bool AttachConsole(int dwProcessId);
-        [DllImport("kernel32.dll")]
-        static extern bool FreeConsole();
-        [DllImport("user32.dll")]
-        public static extern bool FlashWindow(IntPtr hWnd,bool bInvert );
+
 
 
         int ffmpegid =0;
@@ -139,7 +130,7 @@ namespace M3U8_Downloader
                 }
                 ProgressBar.Value = Convert.ToInt32(Progress); 
 
-                this.Text = "M3U8 Downloader  by：nilaoda [0.1.1]" +  "     已完成：" + String.Format("{0:F}", Progress) + "%";
+                this.Text = "M3U8 Downloader  by：nilaoda/yh20021212 [1.0.1]" +  "     已完成：" + String.Format("{0:F}", Progress) + "%";
             }
             
         }
@@ -173,10 +164,10 @@ namespace M3U8_Downloader
                     if (element.GetElementsByTagName("Skin")[0].InnerText == "0") { SkinId = 1; }
                     Skin();
                     textBox_DownloadPath.Text = element.GetElementsByTagName("DownPath")[0].InnerText;
-                    if (element.GetElementsByTagName("ExtendName")[0].InnerText == "MP4") { radioButton1.Checked = true; }
-                    if (element.GetElementsByTagName("ExtendName")[0].InnerText == "MKV") { radioButton2.Checked = true; }
-                    if (element.GetElementsByTagName("ExtendName")[0].InnerText == "TS") { radioButton3.Checked = true; }
-                    if (element.GetElementsByTagName("ExtendName")[0].InnerText == "FLV") { radioButton4.Checked = true; }
+                    if (element.GetElementsByTagName("ExtendName")[0].InnerText == "MP4") { 选择后缀名.SelectedItem = 选择后缀名.Items[0]; }
+                    if (element.GetElementsByTagName("ExtendName")[0].InnerText == "MKV") { 选择后缀名.SelectedItem = 选择后缀名.Items[1]; }
+                    if (element.GetElementsByTagName("ExtendName")[0].InnerText == "TS") { 选择后缀名.SelectedItem = 选择后缀名.Items[2]; }
+                    if (element.GetElementsByTagName("ExtendName")[0].InnerText == "FLV") { 选择后缀名.SelectedItem = 选择后缀名.Items[3]; }
                 }
             }
             else  //若无配置文件，获取当前程序运行路径，即为默认下载路径
@@ -258,10 +249,17 @@ namespace M3U8_Downloader
             Exist_Run(@"Tools\FFmpeg_Joiner.exe");
         }
 
-        
-
-       
+        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
+
+        private void 关于ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox1 aboutBox = new AboutBox1();
+            aboutBox.ShowDialog();
+        }
+    }
     }
 
 
@@ -282,11 +280,15 @@ namespace M3U8_Downloader
         {
             生成日志ToolStripMenuItem.Enabled = true;
 
+            if (textBox_Name.Text == "Video")
+            {
+                textBox_Name.Text = FileNameHelper.GetFileName();
+            }
+
             if (!Directory.Exists(textBox_DownloadPath.Text))//若文件夹不存在则新建文件夹   
             {
                 Directory.CreateDirectory(textBox_DownloadPath.Text); //新建文件夹   
-            }  
-
+            }
             else
             {
                 Download();
@@ -322,10 +324,6 @@ namespace M3U8_Downloader
                 label5.ForeColor = Color.Black;
                 label6.ForeColor = Color.Black;
                 label7.ForeColor = Color.Black;
-                radioButton4.ForeColor = Color.Black;
-                radioButton3.ForeColor = Color.Black;
-                radioButton2.ForeColor = Color.Black;
-                radioButton1.ForeColor = Color.Black;
                 linkLabel_Stop.LinkColor = Color.Black;
                 menuStrip1.BackColor = Color.FromArgb(240, 240, 240);
                 textBox_Adress.BackColor = Color.FromArgb(240, 240, 240);
@@ -351,6 +349,8 @@ namespace M3U8_Downloader
                 获取FFmpegToolStripMenuItem.ForeColor = Color.Black;
                 获取新版本ToolStripMenuItem.ForeColor = Color.Black;
                 视频合并ToolStripMenuItem.ForeColor = Color.Black;
+                文件ToolStripMenuItem.ForeColor = Color.Black;
+                //选择后缀名.BackColor = Color.Black;
                 SkinId = 0; //记录皮肤模式
             }
             else
@@ -363,10 +363,6 @@ namespace M3U8_Downloader
                 label5.ForeColor = Color.FromArgb(245, 245, 245);
                 label6.ForeColor = Color.FromArgb(245, 245, 245);
                 label7.ForeColor = Color.FromArgb(245, 245, 245);
-                radioButton4.ForeColor = Color.FromArgb(245, 245, 245);
-                radioButton3.ForeColor = Color.FromArgb(245, 245, 245);
-                radioButton2.ForeColor = Color.FromArgb(245, 245, 245);
-                radioButton1.ForeColor = Color.FromArgb(245, 245, 245);
                 linkLabel_Stop.LinkColor = Color.FromArgb(245, 245, 245);
                 menuStrip1.BackColor = Color.FromArgb(58, 58, 58);
                 textBox_Adress.BackColor = Color.FromArgb(58, 58, 58);
@@ -392,6 +388,8 @@ namespace M3U8_Downloader
                 获取FFmpegToolStripMenuItem.ForeColor = Color.FromArgb(245, 245, 245);
                 获取新版本ToolStripMenuItem.ForeColor = Color.FromArgb(245, 245, 245);
                 视频合并ToolStripMenuItem.ForeColor = Color.FromArgb(245, 245, 245);
+                文件ToolStripMenuItem.ForeColor = Color.FromArgb(245, 245, 245);
+                //选择后缀名.ForeColor = Color.FromArgb(245, 245, 245); 
                 SkinId = 1; //记录皮肤模式
             }
             
@@ -400,10 +398,24 @@ namespace M3U8_Downloader
         private void SaveSettings()
         {
             string ExtendName = "";
-            if (radioButton1.Checked == true) { ExtendName = "MP4"; }
-            if (radioButton2.Checked == true) { ExtendName = "MKV"; }
-            if (radioButton3.Checked == true) { ExtendName = "TS"; }
-            if (radioButton4.Checked == true) { ExtendName = "FLV"; }
+            FileType fileType = GetFileType(选择后缀名.Text.ToLower());
+            switch (fileType)
+            {
+                case FileType.mp4:
+                    ExtendName = GetItemName(fileType);
+                    break;
+                case FileType.mkv:
+                    ExtendName = GetItemName(fileType);
+                    break;
+                case FileType.ts:
+                    ExtendName = GetItemName(fileType);
+                    break;
+                case FileType.flv:
+                    ExtendName = GetItemName(fileType);
+                    break;
+                default:
+                    break;
+            }
 
             XmlTextWriter xml = new XmlTextWriter(@"Tools\Settings.xml", Encoding.UTF8);
             xml.Formatting = Formatting.Indented;
@@ -423,30 +435,23 @@ namespace M3U8_Downloader
         private void Download()
         {
             textBox_Info.Text = "";
-            if (radioButton1.Checked == true)
+            FileType fileType = GetFileType(选择后缀名.Text.ToLower());
+            switch (fileType)
             {
-                houzhui.Text = ".mp4";
-                Command.Text = "-threads 0 -i " + "\"" + textBox_Adress.Text + "\"" + " -c copy -y -bsf:a aac_adtstoasc " + "\"" + textBox_DownloadPath.Text + "\\" + textBox_Name.Text + ".mp4" + "\"";
-                // 启动进程执行相应命令,此例中以执行ffmpeg.exe为例  
-                RealAction("Tools\\ffmpeg.exe", Command.Text);
-            }
-            if (radioButton2.Checked == true)
-            {
-                houzhui.Text = ".mkv";
-                Command.Text = "-threads 0 -i " + "\"" + textBox_Adress.Text + "\"" + " -c copy -y -bsf:a aac_adtstoasc " + "\"" + textBox_DownloadPath.Text + "\\" + textBox_Name.Text + ".mkv" + "\"";
-                RealAction("Tools\\ffmpeg.exe", Command.Text);
-            }
-            if (radioButton3.Checked == true)
-            {
-                houzhui.Text = ".ts";
-                Command.Text = "-threads 0 -i " + "\"" + textBox_Adress.Text + "\"" + " -c copy -y -f mpegts " + "\"" + textBox_DownloadPath.Text + "\\" + textBox_Name.Text + ".ts" + "\"";
-                RealAction("Tools\\ffmpeg.exe", Command.Text);
-            }
-            if (radioButton4.Checked == true)
-            {
-                houzhui.Text = ".flv";
-                Command.Text = "-threads 0 -i " + "\"" + textBox_Adress.Text + "\"" + " -c copy -y -f f4v -bsf:a aac_adtstoasc " + "\"" + textBox_DownloadPath.Text + "\\" + textBox_Name.Text + ".flv" + "\"";
-                RealAction("Tools\\ffmpeg.exe", Command.Text);
+                case FileType.mp4:
+                    DoSomething(GetExtraName(fileType));
+                    break;
+                case FileType.mkv:
+                    DoSomething(GetExtraName(fileType));
+                    break;
+                case FileType.ts:
+                    DoSomething(GetExtraName(fileType));
+                    break;
+                case FileType.flv:
+                    DoSomething(GetExtraName(fileType));
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -481,10 +486,10 @@ namespace M3U8_Downloader
 
         public void Stop()
         {
-            AttachConsole(ffmpegid);
-            SetConsoleCtrlHandler(IntPtr.Zero, true);
-            GenerateConsoleCtrlEvent(0, 0);
-            FreeConsole();
+            NativeMethod.AttachConsole(ffmpegid);
+            NativeMethod.SetConsoleCtrlHandler(IntPtr.Zero, true);
+            NativeMethod.GenerateConsoleCtrlEvent(0, 0);
+            NativeMethod.FreeConsole();
         }
 
         //以下为实现异步输出CMD信息
@@ -525,7 +530,7 @@ namespace M3U8_Downloader
 
         private void CmdProcess_Exited(object sender, EventArgs e)
         {
-            FlashWindow(this.Handle, true);
+            NativeMethod.FlashWindow(this.Handle, true);
             MessageBox.Show("命令执行结束！", "M3U8 Downloader", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);  // 执行结束后触发
         }  
     }
